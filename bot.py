@@ -2,8 +2,13 @@ import requests
 
 url = "https://api.binance.com/api/v3/exchangeInfo"
 
-response = requests.get(url, timeout=20)
+data = requests.get(url).json()
 
-print("STATUS CODE:", response.status_code)
-print("RESPONSE:")
-print(response.text[:500])
+symbols = []
+
+for s in data["symbols"]:
+    if s["quoteAsset"] == "USDT" and s["status"] == "TRADING":
+        symbols.append(s["symbol"])
+
+print("TOTAL SYMBOLS:", len(symbols))
+print(symbols[:20])
